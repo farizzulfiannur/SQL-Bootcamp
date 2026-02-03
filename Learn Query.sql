@@ -106,4 +106,61 @@ delete from customers where id = '13';
 select * from persons
 truncate table persons
 
+/* ========== FILTERING DATA ============== */
 
+-- COMPARISON OPERATOR
+-- Retrieve all customers from Germany
+select * from customers where country = 'Germany';
+
+-- Retrieve all customers who are not from Germany 
+select * from customers where country <> 'Germany';
+select * from customers where country != 'Germany';
+
+ --Retrieve all customers with a score greater than 500
+select * from customers where score > 500;
+
+ --Retrieve all customers with a score of 500 or more 
+select * from customers where score >= 500;
+
+ --Retrieve all customers with a score less than 500
+ select * from customers where score < 500;
+
+  --Retrieve all customers with a score of 500 or under
+  select * from customers where score <= 500;
+
+  -- LOGICAL OPERATORS
+  -- Retrieve all customers who are from the USA AND have a score greater than 500
+  select * from customers where country = 'USA' and score > 500;
+  
+  -- Retrieve all customers who are either from the USA OR have a score greater than 500
+  select * from customers where country = 'USA' or score > 500;
+
+  -- Retrieve all customers with a score not less than 500
+  select * from customers where not score < 500;
+
+  -- RANGE OPERATORS 
+  -- Retrive all customers whose score falls in the range between 100 and 500
+  select * from customers where score >= 100 and score <= 500;
+  select * from customers where score between 100 and 500;
+
+  -- Retrieve all customers from either Germany or USA 
+  select * from customers where country = 'Germany' or country = 'USA';
+  select * from customers where country in ('Germany','USA');
+
+  -- Retrieve all customers from neither Germany or USA 
+  select * from customers where country not in ('Germany','USA');
+
+  -- Find all customers whose first name starts with 'M' 
+  select * from customers; 
+  select * from customers where first_name like 'M%';
+
+  -- Find all customers whose first name ends with 'n'
+  select * from customers
+  select * from customers where first_name like '%n';
+
+  -- Find all customers whose first name contains 'r'
+  select * from customers
+  select * from customers where first_name like '%r%';
+
+  -- Find all customers whose first name has 'r' in the third position
+  select * from customers where first_name like '%__r%';
