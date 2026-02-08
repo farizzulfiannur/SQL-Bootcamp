@@ -1,4 +1,5 @@
-
+-- Mochammad Fariz Zulfiannur 
+-- Learn SQL to be advanced using a SQL 
 select * from customers;
 select country, sum(score) from customers group by country;
 select country, sum(score) as total_score, count(id) as total_customers from customers group by country;
@@ -164,3 +165,84 @@ select * from customers where score >= 500;
 
   -- Find all customers whose first name has 'r' in the third position
   select * from customers where first_name like '%__r%';
+
+  /* SQL JOINS */ 
+  -- No Join
+  select * from orders
+  select * from customers
+
+  -- inner Join
+  select c.id, c.first_name, o.order_id, o.sales from customers c inner join orders o
+  on c.id = o.customer_id;
+
+  -- left join 
+  -- Get all customers along with their orders, including those without orders
+	  select c.id, c.first_name, o.order_id, o.sales from customers c left join orders o
+	  on c.id = o.customer_id;	
+
+  -- right Join 
+  -- Get all customers along with their orders, including orders without matching customers 
+	select c.id, c.first_name, o.order_id, o.sales from customers c right join orders o
+	on c.id = o.customer_id;	
+
+ -- task 
+ -- Get all customers along with their orders, including orders without matching customers (Using 
+ -- left join)
+ select c.id, c.first_name, o.order_id, o.sales from orders o left join customers c 
+ on c.id = o.customer_id;	
+
+ -- full join 
+ -- Get all customers and all orders, even if there's no match 
+ select c.id, c.first_name, o.order_id, o.sales from customers c full join orders o 
+ on c.id = o.customer_id;
+
+ -- Left Anti Join
+ -- Get all customers who haven't place any orders 
+ select * from customers c left join orders o 
+ on c.id = o.customer_id where o.customer_id is null;
+
+ -- Right Anti Join 
+ -- Get all order without matching customers 
+ select * from customers c right join orders o 
+ on c.id = o.customer_id where c.id is null;
+
+ -- task
+-- Get all order without matching customers (Must use Left Join)
+select * from orders o left join customers c on c.id = o.customer_id
+where c.id is null;
+
+-- FULL ANTI JOIN
+-- Find customers without orders and orders without customers 
+select * from customers c full join orders o
+on c.id = o.customer_id where c.id is null or o.customer_id is null;
+
+-- Get all customers along with their orders, 
+-- But only for customers who have placed an orders (without inner join)
+select * from customers c full join orders o 
+on c.id = o.customer_id where c.id is not null and o.customer_id is not null;
+
+-- CROSS JOIN 
+-- Generate all possible combinations of customers and orders 
+select * from customers c cross join orders o;
+
+-- Multiple Table Joins 
+-- Use SalesDB 
+-- Retrieve a list of all orders, along with the related customers, 
+-- product, and employee details : 
+-- Foreach : Order ID, Customer's Name, Product Name, Sales Amount, Product price, and Salesperson's name
+select * from Sales.Customers;
+select * from sales.Employees;
+select * from sales.Orders;
+select * from sales.Products;
+SELECT * from sales.OrdersArchive;
+select * from sales.Orders so left join sales.Customers sc on
+so.CustomerID = sc.CustomerID left join sales.Products sp
+on so.ProductID = sp.ProductID left join sales.Employees se
+on so.SalesPersonID = se.EmployeeID;
+
+select so.OrderID, SC.FirstName as Customers_Name,sp.Product as Product_Name,
+so.Sales as Sales_Amount, sp.Price as Product_Price, se.FirstName as Salespersons_Name
+from sales.Orders so left join sales.Customers sc on
+so.CustomerID = sc.CustomerID left join sales.Products sp
+on so.ProductID = sp.ProductID left join sales.Employees se
+on so.SalesPersonID = se.EmployeeID;
