@@ -246,3 +246,105 @@ from sales.Orders so left join sales.Customers sc on
 so.CustomerID = sc.CustomerID left join sales.Products sp
 on so.ProductID = sp.ProductID left join sales.Employees se
 on so.SalesPersonID = se.EmployeeID;
+
+
+/* SQL SET OPERATORS */
+-- Set Operator Rules
+select FirstName, LastName from sales.Customers 
+union 
+select FirstName, LastName from sales.Employees
+
+-- Must same the type data 
+select CustomerID, LastName from Sales.Customers 
+union 
+select FirstName, LastName from sales.Employees;
+-- error bcz customerID is a type data INT and FirstName is a type data varchar
+
+-- First query is display as a coloumn name 
+select firstname as First_name, LastName from Sales.Customers 
+union 
+select FirstName, LastName from sales.Employees;
+
+-- Order by can be used only once
+select firstname as First_name, LastName from Sales.Customers as sc
+union 
+select FirstName, LastName from sales.Employees as se
+order by sc.FirstName asc;
+
+-- UNION 
+-- Combine the data from employees and customers into one table 
+select * from sales.Customers;
+select * from sales.Employees;
+select FirstName,LastName,score from sales.Customers sc
+union 
+select FirstName,LastName, null from sales.Employees se;
+
+select FirstName,LastName from sales.Employees se
+union
+select FirstName,LastName from sales.Customers sc;
+
+-- UNION 
+-- Combine the data from employees and customers into one table, including duplicates 
+select FirstName,LastName from sales.Employees se
+union all
+select FirstName,LastName from sales.Customers sc;
+
+-- Except 
+-- Find employees who are not customers at the same time 
+select FirstName,LastName from sales.Employees;
+except 
+select FirstName,LastName from sales.Customers;
+
+-- insert into sales.Customers(CustomerID,FirstName,LastName) values 
+-- ((select top 1 customerID from sales.Customers order by CustomerID desc)+1,'Carol','Konlak');
+select * from sales.Customers;
+
+--delete from sales.Customers where FirstName = 'Carol' and LastName = 'Konlak';
+
+-- INTERSECT 
+-- Find the employees, who are also Customers
+select FirstName,LastName from sales.Customers
+intersect 
+select FirstName,LastName from sales.Employees
+
+-- USE CASE COMBINE INFORMATION (MERGE DATA)
+-- Orders are stored in separate tables (Orders and OrdersArchive). 
+-- Combine all orders into one reports without duplicates
+
+select * from sales.Orders;
+select * from sales.OrdersArchive;
+
+select * from sales.Orders
+union
+select * from sales.OrdersArchive;
+
+select 'OrderTable' as OrderTable,
+        [OrderID]
+      ,[ProductID]
+      ,[CustomerID]
+      ,[SalesPersonID]
+      ,[OrderDate]
+      ,[ShipDate]
+      ,[OrderStatus]
+      ,[ShipAddress]
+      ,[BillAddress]
+      ,[Quantity]
+      ,[Sales]
+      ,[CreationTime]
+from sales.Orders
+union 
+SELECT 'OrderArchiveTable' as OrderArchiveTable,
+        [OrderID]
+      ,[ProductID]
+      ,[CustomerID]
+      ,[SalesPersonID]
+      ,[OrderDate]
+      ,[ShipDate]
+      ,[OrderStatus]
+      ,[ShipAddress]
+      ,[BillAddress]
+      ,[Quantity]
+      ,[Sales]
+      ,[CreationTime]
+FROM sales.OrdersArchive
+order by OrderID asc
