@@ -348,3 +348,89 @@ SELECT 'OrderArchiveTable' as OrderArchiveTable,
       ,[CreationTime]
 FROM sales.OrdersArchive
 order by OrderID asc
+
+/* STRING FUNCTION */ 
+-- DATA MANIPULATION 
+
+-- CONCAT (Combine multiple string into one)
+-- Show a list of customers, first names together with their country in the one column 
+select *from sales.customers;
+select 
+FirstName, Country,
+concat(FirstName,' - ',Country) as Firstname_Country
+from Sales.Customers;
+
+-- UPPER (Convert all characters to upper case)
+-- Show a list of customers, first names together with their country in the one column (in uppercase)
+select 
+FirstName, Country,
+upper(concat(FirstName,' - ',Country)) as Firstname_Country
+from Sales.Customers;
+
+-- LOWER (Convert all characters to lower case)
+-- Show a list of customers, first names together with their country in the one column (in lowercase)
+select 
+FirstName, Country,
+lower(concat(FirstName,' - ',Country)) as Firstname_Country
+from Sales.Customers;
+
+-- TRIM (Removes leading and tralling spaces)
+-- Find customers whose first name contains leading or tralling spaces 
+
+select * from customers;
+select first_name,len(first_name) from customers;
+select first_name from customers where first_name != trim(first_name);
+select first_name, trim(first_name) as Trim_FirstName, len(trim(first_name)) as LenghtTrim_FirstName, 
+len(first_name) as LengthPure_FirstName,
+len(first_name) - len(trim(first_name)) as MinusLength
+from customers;
+
+-- REPLACE 
+-- Remove dashes ( - ) from a phone number
+select '123-456-789' as OldColumn,
+replace('123-456-789','-','') as NewColumn;
+
+--Replace file extence from txt to csv 
+select 'file.txt' as FormatTXT, 
+replace ('file.txt','.txt','.csv') as FormatCSV; 
+
+-- Calculate the length of each customer's first name
+select first_name, len(first_name) as Lenght_FirstName from customers;
+
+-- LEFT 
+select * from customers where id =5;
+select id,first_name,
+concat(left(upper(country),1),
+(select first_name from customers where id =4)
+) as country,
+right(lower(country),6) as contri
+,score from customers where id =5;
+
+-- Retrieve the first two characters of each first name 
+select first_name,left(trim(first_name),2) FirstTwoCharacters from customers;
+
+-- Retrieve the last two characters of each first name 
+select first_name,right(trim(first_name),2) LastTwoCharacters from customers;
+
+-- SUBSTRING 
+-- Retrieve a list of customer's first name removing the first character
+select * from customers
+select first_name,SUBSTRING(trim(first_name),2,len(first_name)) from customers
+
+-- Retrieve a list of customer's where first characters is capitalize and more characters is lowercase
+select first_name from customers;
+select first_name,
+concat(upper(left(trim(first_name),1)),SUBSTRING(trim(first_name),2,len(first_name)))
+from customers;
+
+-- NUMBER FUNCTION 
+-- ROUND 
+select 3.156 as RealNumber,
+round(3.156,2) as Round_2,
+round(3.156,1) as Round_1,
+round(3.156,0) as Round_0
+
+-- ABS 
+select -10 as MinusNumber,
+abs(-10) as AbsoluteNumber
+
